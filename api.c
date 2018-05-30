@@ -122,8 +122,6 @@ void print_frame(struct telemetry_api_frame* frame) {
   printf("%d\n", frame->payload.gps_sample_time);
 
   printf("%d\n", frame->crc);
-
-
 }
 
 int main(int argc, char* argv[]) {
