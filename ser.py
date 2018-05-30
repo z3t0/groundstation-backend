@@ -10,11 +10,10 @@ ser.open()
 
 time.sleep(2)
 
-ser.write(1)
+while True:
+    ser.write(1)
 
-data = ser.read(64)
+    data = ser.readline()[:-1]
 
-import pdb;
-pdb.set_trace()
-print(data)
+    print(data)
 
