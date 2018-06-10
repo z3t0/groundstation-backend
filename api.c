@@ -129,9 +129,8 @@ void print_frame(struct telemetry_api_frame* frame) {
   print_elem("ground_speed", frame->payload.ground_speed, 0);
   print_elem("course_over_ground", frame->payload.course_over_ground, 0);
   print_elem("gps_sample_time", frame->payload.gps_sample_time, 1);
-  printf(",\n");
+  printf("}\n");
 
-  print_elem("crc" ,frame->crc, 1);
 }
 
 int main(int argc, char* argv[]) {

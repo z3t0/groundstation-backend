@@ -1,19 +1,39 @@
 #!/usr/bin/python
+import sys
 
 import serial
 import time
+import codecs
 
 ser = serial.Serial()
-ser.baudrate = 115200
-ser.port = '/dev/ttyACM0'
+ser.baudrate = 9600
+ser.port = '/dev/ttyUSB0'
 ser.open()
 
 time.sleep(2)
 
+inside = False
+
+frames = []
+
+data = []
+
 while True:
-    ser.write(1)
+    data_byte = ser.read()
 
-    data = ser.readline()[:-1]
+    if data_byte == b'R':
+        data = []
+        inside = True
 
-    print(data)
+    if inside:
+        encoded = (codecs.encode(data_byte, "hex"))
+        data.append(encoded)
+        sys.stdout.buffer.write(encoded)
 
+    if data_byte == b'\xcc':
+        inside = False
+        print()
+        frames.append(data)
+
+    if len(frames) > 10:
+        break

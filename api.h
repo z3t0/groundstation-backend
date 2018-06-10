@@ -98,12 +98,15 @@ struct telemetry_frame {
     uint16_t ground_speed;
     uint16_t course_over_ground;
     uint32_t gps_sample_time;
-};
+} __attribute__((packed));
 
 // Not when using these structures, source_address, destintation_address and payload_type should be cast to and from their
 // respective enum types.
+
 #pragma pack(1)
 struct telemetry_api_frame {
+    uint8_t start_delimiter;            // 0x52
+    
     uint8_t source_address;
     uint8_t destination_address;
     
@@ -114,5 +117,5 @@ struct telemetry_api_frame {
     
     struct telemetry_frame payload;
     
-    uint8_t crc;
+    uint8_t end_delimiter;              // 0xCC
 };
