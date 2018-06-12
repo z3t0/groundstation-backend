@@ -4,19 +4,30 @@ import sys
 import serial
 import time
 import codecs
+import subprocess
+import datetime
 
 ser = serial.Serial()
 ser.baudrate = 9600
-ser.port = '/dev/ttyUSB0'
+ser.port = '/dev/ttyACM0'
 ser.open()
 
 time.sleep(2)
 
 inside = False
 
-frames = []
-
 data = []
+
+def writeFrame(frame):
+    data = ''
+    for i in frame:
+        data += 'frame'
+
+    path = datetime.datetime.now().strftime("%Y-%m-%d-%h:%m:%S") + '.json'
+
+    f = open('frames/' + path, 'w')
+    res = subprocess.call(['./api', data], stdout = f)
+    f.close()
 
 while True:
     data_byte = ser.read()
@@ -32,8 +43,5 @@ while True:
 
     if data_byte == b'\xcc':
         inside = False
-        print()
-        frames.append(data)
-
-    if len(frames) > 10:
-        break
+        print('ended')
+        writeFrame(data)
